@@ -69,10 +69,6 @@ El siguiente diagrama muestra las claves y relaciones principales.
 
 **Figura 1**. *Diagrama Entidad-Relación de BiblioApp*
 ```mermaid
-%%{init: {
-  "theme": "base",
-  "curve": "step"
-}}%%
 erDiagram
 
     Roles {
