@@ -2,15 +2,15 @@
 
 **Integrantes:**
 
-- 24410172 - Miguel Angel Ramirez Francisco
+- 24410172 - Miguel Ángel Ramírez Francisco
 - 24410479 - Rocío Jaqueline Bordier Flores
 - 24410663 - Axel Rodrigo Cisneros Cano
 
 ---
 
-## 1. Idea general
+## 1. Idea General
 
-BiblioApp es una aplicación web para administrar el catálogo, libros y  préstamos de una biblioteca escolar. Está dirigida al personal de la biblioteca, alumnos y maestros.
+BiblioApp es una aplicación web para administrar el catálogo, libros y  préstamos de una biblioteca académica. Está dirigida al personal de la biblioteca, alumnos y docentes.
 
 Se ha detectado una dificultad para mantener un registro centralizado y actualizado. Algunos procesos aún se realizan mediante archivos separados, bases desactualizadas o fuera del acceso en línea útil hoy en día.
 
@@ -18,7 +18,7 @@ El objetivo del sistema es centralizar la información en una base de datos MySQ
 
 Los alumnos y maestros registrarán su identificador institucional que permitirá distinguir su perfil dentro del sistema y podrán consultar sus préstamos e historial.
 
-### 1.1 Alcance del sistema
+### 1.1 Alcance del Sistema
 - Registrar y autenticar cuentas:
     - Administradores (personal)
     - Lectores (alumnos y maestros)
@@ -43,171 +43,182 @@ Los préstamos serán registrados por el administrador durante la entrega presen
 
 Las fechas de vencimiento se establecerán al registrar cada préstamo. No se implementarán políticas establecidas por la institución.
 
-## 2. Descripción de tablas
+## 2. Descripción de Tablas
 Se integra la siguiente base de datos relacional compuesta por 14 tablas, normalizada hasta la Tercera Forma Normal (3FN):
 
 | Tabla | Descripción y datos principales |
 | --- | --- |
-| `roles` | Define el tipo de cuenta y permisos: Administrador y Lector. Contiene identificador y nombre único del rol. |
-| `usuarios` | Almacena nombre completo, correo institucional, hash de contraseña, estado activo/inactivo y referencia al rol. |
-| `administradores` | Contiene la información específica del personal encargado de administrar la biblioteca. |
-| `lectores` | Identifica a los usuarios que pueden recibir préstamos. Cada lector se asocia con una cuenta única mediante `id_usuario`. |
-| `alumnos` | Extiende el perfil del lector con su identificador de alumno único. `id_lector` será clave primaria y foránea. |
-| `maestros` | Extiende el perfil del lector con su identificador de docente único. `id_lector` será clave primaria y foránea. |
-| `editoriales` | Registra las editoriales relacionadas con los libros del catálogo. |
-| `categorias` | Registra la clasificación principal de los libros. |
-| `autores` | Almacena los nombres de los autores que participan en las obras del catálogo. |
-| `libros` | Registra título, ISBN, año de publicación, edición, editorial, categoría y estado activo/inactivo. Cada registro representa una edición bibliográfica. |
-| `libro_autor` | Auxiliar en la relación de muchos a muchos entre libros y autores. Su clave primaria compuesta evita repetir la misma asociación. |
-| `ubicaciones` | Registra los códigos y descripciones de estantes o secciones de la biblioteca. |
-| `ejemplares` | Registra cada copia física con código de inventario único, libro, ubicación y condición operativa: habilitado, mantenimiento o baja. |
-| `prestamos` | Almacena el lector, el administrador responsable del registro y la fecha y hora de la operación. |
-| `detalle_prestamo` | Relaciona cada préstamo con sus ejemplares e incluye fecha de vencimiento, fecha y hora de devolución, administrador que recibe la devolución y observaciones. |
+| `Roles` | Define el tipo de cuenta y permisos: Administrador y Lector. Contiene identificador y nombre único del rol. |
+| `Usuarios` | Almacena nombre completo, correo institucional, hash de contraseña, estado activo/inactivo y referencia al rol. |
+| `Admins` | Contiene la información específica del personal encargado de administrar la biblioteca. |
+| `Lectores` | Identifica a los usuarios que pueden recibir préstamos. Cada lector se asocia con una cuenta única mediante `id_usuario`. |
+| `Alumnos` | Extiende el perfil del lector con atributos de alumnos. `id_lector` será clave primaria y foránea. |
+| `Docentes` | Extiende el perfil del lector con atributos de docentes. `id_lector` será clave primaria y foránea. |
+| `Editoriales` | Registra las editoriales relacionadas con los libros del catálogo. |
+| `Categorias` | Registra la clasificación principal de los libros. |
+| `Autores` | Almacena los nombres de los autores que participan en las obras del catálogo. |
+| `Libros` | Registra título, ISBN, año de publicación, edición, editorial, categoría y estado activo/inactivo. Cada registro representa una edición bibliográfica. |
+| `Libro_Autor` | Auxiliar en la relación de muchos a muchos entre libros y autores. Su clave primaria compuesta evita repetir la misma asociación. |
+| `Ubicaciones` | Registra los códigos y descripciones de estantes o secciones de la biblioteca. |
+| `Ejemplares` | Registra cada copia física con código de inventario único, libro, ubicación y condición operativa: habilitado, mantenimiento o baja. |
+| `Prestamos` | Almacena el lector, el administrador responsable del registro y la fecha y hora de la operación. |
+| `Detalle_Prestamo` | Relaciona cada préstamo con sus ejemplares e incluye fecha de vencimiento, fecha y hora de devolución, administrador que recibe la devolución y observaciones. |
 
-### 2.1 Diagrama de base de datos
-El siguiente diagrama muestra las claves y relaciones principales. Las fechas de devolución y el administrador que recibe se mantendrán nulos mientras el ejemplar no haya sido devuelto.
+### 2.1 Diagrama de Base de Datos
+El siguiente diagrama muestra las claves y relaciones principales.
 
+**Figura 1**. *Diagrama Entidad-Relación de BiblioApp*
 ```mermaid
+%%{init: {
+  "theme": "base",
+  "curve": "step"
+}}%%
 erDiagram
 
-    roles {
+    Roles {
         INT id_rol PK
         VARCHAR nombre UK
     }
 
-    usuarios {
+    Usuarios {
         INT id_usuario PK
         INT id_rol FK
-        VARCHAR nombre_completo
+        VARCHAR nombre
         VARCHAR correo_institucional UK
         VARCHAR password_hash
         BOOLEAN activo
     }
 
-    administradores {
-        INT id_usuario PK, FK
+    Admins {
+        INT id_admin PK
+        INT id_usuario FK, UK
     }
 
-    lectores {
+    Lectores {
         INT id_lector PK
         INT id_usuario FK, UK
     }
 
-    alumnos {
+    Alumnos {
         INT id_lector PK, FK
-        VARCHAR identificador_alumno UK
         VARCHAR carrera
         INT semestre
     }
 
-    maestros {
+    Docentes {
         INT id_lector PK, FK
-        VARCHAR identificador_docente UK
         VARCHAR departamento
     }
 
-    editoriales {
+    Editoriales {
         INT id_editorial PK
         VARCHAR nombre UK
     }
 
-    categorias {
+    Categorias {
         INT id_categoria PK
         VARCHAR nombre UK
     }
 
-    autores {
+    Autores {
         INT id_autor PK
         VARCHAR nombre
     }
 
-    libros {
+    Libros {
         INT id_libro PK
         INT id_editorial FK
         INT id_categoria FK
         VARCHAR titulo
         VARCHAR isbn UK
-        YEAR anio_publicacion
+        YEAR publicacion
         VARCHAR edicion
         BOOLEAN activo
     }
 
-    libro_autor {
+    Libro_Autor {
         INT id_libro PK, FK
         INT id_autor PK, FK
     }
 
-    ubicaciones {
+    Ubicaciones {
         INT id_ubicacion PK
         VARCHAR codigo UK
         VARCHAR descripcion
     }
 
-    ejemplares {
+    Ejemplares {
         INT id_ejemplar PK
         INT id_libro FK
         INT id_ubicacion FK
-        VARCHAR codigo_inventario UK
-        ENUM condicion
+        VARCHAR cod_inventario UK
+        ENUM estado
     }
 
-    prestamos {
+    Prestamos {
         INT id_prestamo PK
         INT id_lector FK
-        INT id_administrador FK
-        DATETIME fecha_hora_prestamo
+        INT id_admin FK
+        DATETIME fecha_prestamo
     }
 
-    detalle_prestamo {
+    Detalle_Prestamo {
         INT id_detalle PK
         INT id_prestamo FK
         INT id_ejemplar FK
         DATE fecha_vencimiento
-        DATETIME fecha_hora_devolucion
-        INT id_administrador_devolucion FK
+        DATETIME fecha_devolucion
+        INT id_admin_devolucion FK
         TEXT observaciones
     }
 
+    Roles ||--o{ Usuarios : tiene
 
-    roles ||--o{ usuarios : "tiene"
+    Usuarios ||--o| Admins : "corresponde a"
+    Usuarios ||--o| Lectores : "corresponde a"
 
-    usuarios ||--o| administradores : "corresponde a"
-    usuarios ||--o| lectores : "corresponde a"
+    Lectores ||--o| Alumnos : "puede ser"
+    Lectores ||--o| Docentes : "puede ser"
 
-    lectores ||--o| alumnos : "puede ser"
-    lectores ||--o| maestros : "puede ser"
+    Editoriales ||--o{ Libros : publica
+    Categorias ||--o{ Libros : clasifica
 
-    editoriales ||--o{ libros : "publica"
-    categorias ||--o{ libros : "clasifica"
+    Libros ||--o{ Libro_Autor : tiene
+    Autores ||--o{ Libro_Autor : "participa en"
 
-    libros ||--o{ libro_autor : "tiene"
-    autores ||--o{ libro_autor : "participa en"
+    Libros ||--o{ Ejemplares : posee
+    Ubicaciones ||--o{ Ejemplares : ubica
 
-    libros ||--o{ ejemplares : "posee"
-    ubicaciones ||--o{ ejemplares : "ubica"
+    Lectores ||--o{ Prestamos : realiza
+    Admins ||--o{ Prestamos : registra
 
-    lectores ||--o{ prestamos : "realiza"
-    administradores ||--o{ prestamos : "registra"
-
-    prestamos ||--|{ detalle_prestamo : "contiene"
-    ejemplares ||--o{ detalle_prestamo : "incluye"
-    administradores ||--o{ detalle_prestamo : "recibe"
+    Prestamos ||--|{ Detalle_Prestamo : contiene
+    Ejemplares ||--o{ Detalle_Prestamo : incluye
+    Admins ||--o{ Detalle_Prestamo : recibe
 ```
 
-## 3. Tipos de usuario (roles)
+[Estilo alterno](./diagramaER.svg)
+
+#### Restricciones
+
+* Tabla **Admins**:
+    * id_rol = 1. Solo podrán registrarse los usuarios cuyo id_rol sea igual a 1, correspondiente al rol de admin.
+* Tabla **Detalle_Prestamo**:
+    * Las fechas de devolución y el administrador que recibe se mantendrán nulos mientras el ejemplar no haya sido devuelto.
+
+## 3. Tipos de Usuario (Roles)
 
 BiblioApp manejará dos roles de acceso: Administrador y Lector. El rol Lector se especializa en dos tipos de perfil: Alumno y Maestro.
 
 | Rol               | Acciones principales                                                                                                                                                                                                                                                              |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Administrador** | Iniciar sesión; administrar usuarios, lectores y cuentas; gestionar libros, autores, editoriales, categorías, ubicaciones y ejemplares; registrar préstamos y devoluciones; consultar la disponibilidad de ejemplares; consultar historiales; y generar reportes parametrizables. |
-| **Alumno**        | Iniciar sesión con su identificador institucional; consultar el catálogo de libros; consultar la disponibilidad de ejemplares; consultar sus préstamos activos y su historial de préstamos y devoluciones.                                                                        |
-| **Maestro**       | Iniciar sesión con su identificador institucional; consultar el catálogo de libros; consultar la disponibilidad de ejemplares; consultar sus préstamos activos y su historial de préstamos y devoluciones.                                                                        |
+| **Alumno**        | Iniciar sesión con su correo institucional; consultar el catálogo de libros; consultar la disponibilidad de ejemplares; consultar sus préstamos activos y su historial de préstamos y devoluciones.                                                                        |
+| **Docente**       | Iniciar sesión con su correo institucional; consultar el catálogo de libros; consultar la disponibilidad de ejemplares; consultar sus préstamos activos y su historial de préstamos y devoluciones.                                                                        |
 
-Alumnos y maestros se diferencian por la información específica almacenada en sus perfiles.
+Alumnos y docentes se diferencian por la información específica almacenada en sus perfiles.
 
 Los préstamos y devoluciones serán gestionados por el **Administrador**, por lo que los alumnos y maestros no podrán registrar directamente estas operaciones.
-
 
 ## 4. Arquitectura
 El sistema será desarrollado como una aplicación web, por lo que los usuarios podrán acceder mediante un navegador web sin necesidad de instalar una aplicación nativa en cada equipo.
@@ -220,7 +231,7 @@ Las tecnologías principales serán:
 * **Base de datos**: **MySQL**, utilizada para almacenar y administrar la información de usuarios, lectores, libros, ejemplares, préstamos y devoluciones.
 * **Entorno de desarrollo**: **Visual Studio Code** como editor de código y un entorno local basado en Apache, PHP y MySQL para el desarrollo y las pruebas del sistema.
 
-### Módulos del sistema
+### Módulos del Sistema
 
 BiblioApp estará segmentado en los siguientes módulos:
 
@@ -247,7 +258,7 @@ Los reportes serán **parametrizables**, es decir, el administrador podrá selec
 | REP-03 | Inventario de ejemplares      | **Categoría:** opcional. **Ubicación:** opcional. **Disponibilidad actual:** todos, disponibles, prestados o fuera de servicio.                                                                                         | Código de ejemplar, título, categoría, ubicación, condición operativa y disponibilidad calculada. Incluye totales por disponibilidad de acuerdo con los filtros seleccionados.                                                                                                           |
 | REP-04 | Libros más solicitados        | **Fecha inicial y fecha final:** obligatorias y aplicadas a la fecha del préstamo. **Categoría:** opcional. **Tipo de lector:** todos, alumnos o maestros. **Cantidad máxima de resultados:** 5, 10 o 20.               | Ranking de libros según la cantidad de veces que sus ejemplares fueron incluidos en préstamos durante el periodo seleccionado. Incluye título, ISBN cuando exista y cantidad de ejemplares prestados. Los empates se ordenarán primero por título y después por identificador del libro. |
 
-### Criterios de parametrización y cálculo
+### Criterios de Parametrización y Cálculo
 
 * **REP-01:** el administrador seleccionará un rango de fechas obligatorio. El sistema incluirá los préstamos cuya fecha se encuentre dentro del rango, considerando tanto la fecha inicial como la fecha final. Además, podrá filtrar por tipo de lector o seleccionar un lector específico.
 
@@ -257,7 +268,7 @@ Los reportes serán **parametrizables**, es decir, el administrador podrá selec
 
 * **REP-04:** el administrador deberá indicar un periodo mediante una fecha inicial y una fecha final. De manera opcional, podrá seleccionar una categoría y el tipo de lector. Finalmente, elegirá si desea visualizar los **5, 10 o 20 libros** con mayor cantidad de ejemplares incluidos en préstamos durante el periodo seleccionado.
 
-### Criterios generales de cálculo
+### Criterios Generales de Cálculo
 
 * Los rangos de fechas incluirán **ambos días** y se rechazará el reporte si la fecha inicial es posterior a la fecha final.
 
@@ -272,7 +283,7 @@ Los reportes serán **parametrizables**, es decir, el administrador podrá selec
 * Cuando un reporte no encuentre registros que coincidan con los parámetros seleccionados, el PDF mostrará un mensaje indicando que **no se encontraron registros para los filtros seleccionados**.
 
 
-## 6. Requerimientos funcionales
+## 6. Requerimientos Funcionales
 
 Los requerimientos funcionales de BiblioApp describen las acciones que el sistema deberá realizar para cumplir con el alcance definido. Cada requerimiento identifica el módulo al que pertenece, el rol que interviene, las reglas principales y su prioridad.
 
