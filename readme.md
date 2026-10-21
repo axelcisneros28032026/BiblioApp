@@ -193,7 +193,6 @@ erDiagram
     Admins ||--o{ Detalle_Prestamo : recibe
 ```
 
-[Estilo alterno](./diagramaER.svg)
 
 #### Restricciones
 
