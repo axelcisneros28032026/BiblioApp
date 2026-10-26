@@ -271,7 +271,7 @@ Los requerimientos funcionales de BiblioApp describen las acciones que el sistem
 
 **Roles:** Para simplificar la descripción, el rol **Lector** comprende tanto a **Alumnos** como a **Maestros**.
 
-| ID | Módulo | Nombre | Rol principal | Descripción del requerimiento | Prioridad  Criterios de aceptación | Validación / excepción |
+| ID | Módulo | Nombre | Rol principal | Descripción del requerimiento | Prioridad | Criterios de aceptación | Validación / excepción |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | **RF-01** | Seguridad | **Autenticar usuario** | Administrador, Lector | El sistema permitirá iniciar sesión mediante correo institucional único y contraseña. Validará que las credenciales sean correctas y que la cuenta se encuentre activa. Después de una autenticación válida, mostrará las funciones correspondientes al rol del usuario. | Imprescindible |  Credenciales activas de administrador, alumno y docente redirigen a su panel; el rol se obtiene de MySQL y se regenera la sesión. | Correo mal formado o campos vacíos: no autentica. Contraseña incorrecta, correo inexistente, cuenta inactiva o perfil incompleto: mensaje genérico y sin sesión. |
 | **RF-02** | Seguridad | **Cerrar sesión** | Administrador, Lector | El sistema permitirá cerrar la sesión activa y requerirá una nueva autenticación para acceder nuevamente a las funciones protegidas. | Imprescindible |  Cerrar sesión mediante POST destruye la sesión y cookie; volver a una URL protegida exige autenticación. | GET en logout: 405. Token CSRF ausente o inválido: 403. La página protegida no se almacena en caché. |
