@@ -1,0 +1,18 @@
+# Variables de entorno y credenciales
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencias
+**/vendor/
+
+# Archivos temporales y registros
+*.log
+*.tmp
+
+# Configuración de editores
+.vscode/
+.idea/
