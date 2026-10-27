@@ -207,7 +207,12 @@ INSERT INTO Roles (id_rol, nombre) VALUES
     (2, 'Alumno'),
     (3, 'Docente');
 
-INSERT INTO Usuarios (id_usuario, id_rol, nombre, correo_institucional, password_hash, activo) VALUES
+INSERT INTO Usuarios
+    (id_usuario, id_rol, nombre, correo_institucional, password_hash, activo)
+VALUES
+    (9, 3, 'Sheinbaum', 'laesperanzademexico@itparral.edu.mx', '$2y$12$H4xoZ0oab4FhRyyQxSYLX.Ca99sDd8vENC7mYwjX0Yr3CroFkbasq', TRUE),
+    (10, 2, 'Amery', 'amery@itparral.edu.mx', '$2y$12$H4xoZ0oab4FhRyyQxSYLX.Ca99sDd8vENC7mYwjX0Yr3CroFkbasq', TRUE),
+    (11, 1, 'Administrador BiblioApp', 'admin@biblioapp.com', '$2y$12$cwuTYDq8BandRyJre5iiL.lK3bMXAFNt9lkF0Rxzmft8SIk0mj6Ei', TRUE),
     (1, 1, 'Laura Gutiérrez Mendoza', 'laura.gutierrez@biblioapp.edu.mx', '$2y$10$KlX.hUJXXmpkOW9qVqS6EOHPYzsxxgbF/wpXvq.7Rzv9juuacjRNq', TRUE),
     (2, 1, 'Roberto Salas Ortega', 'roberto.salas@biblioapp.edu.mx', '$2y$10$KlX.hUJXXmpkOW9qVqS6EOHPYzsxxgbF/wpXvq.7Rzv9juuacjRNq', TRUE),
     (3, 2, 'Ana Sofía Torres Rivera', 'a24410101@biblioapp.edu.mx', '$2y$10$6LJ41TpBf3yWodOPuVpzWephUTdstEnu62F.Kf3yJVULNU2tGVxf6', TRUE),
@@ -341,18 +346,6 @@ INSERT INTO Detalle_Prestamo
     (8, 5, 14, '2026-09-29', '2026-09-27 15:10:00', 1, NULL);
 
 UPDATE Ejemplares SET estado = 'mantenimiento' WHERE id_ejemplar = 7;
-
-INSERT INTO Usuarios
-    (id_usuario, id_rol, nombre, correo_institucional, password_hash, activo)
-VALUES
-    (9, 3, 'Sheinbaum', 'laesperanzademexico@itparral.edu.mx',
-     '$2y$12$H4xoZ0oab4FhRyyQxSYLX.Ca99sDd8vENC7mYwjX0Yr3CroFkbasq', TRUE),
-
-    (10, 2, 'Amery', 'amery@itparral.edu.mx',
-     '$2y$12$H4xoZ0oab4FhRyyQxSYLX.Ca99sDd8vENC7mYwjX0Yr3CroFkbasq', TRUE),
-
-    (11, 1, 'Administrador BiblioApp', 'admin@biblioapp.com',
-     '$2y$12$cwuTYDq8BandRyJre5iiL.lK3bMXAFNt9lkF0Rxzmft8SIk0mj6Ei', TRUE);
 
 INSERT INTO Admins (id_admin, id_usuario) VALUES
     (3, 11);
